@@ -41,6 +41,7 @@ func GenerateCacheKey(req listAdsRequest) string {
 		req.AgeStart, req.AgeEnd, req.Country, req.Platform, req.Gender, req.Limit, req.Offset)))
 	return fmt.Sprintf("ads_list_%d", hasher.Sum32())
 }
+
 func (server *Server) CreateAds(ctx *gin.Context) {
 
 	// generate a key for the cache
@@ -162,7 +163,7 @@ func (server *Server) ListAds(ctx *gin.Context) {
 			ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 			return
 		}
-		server.redis.Set(ctx, cachekey, jsonData, 5*time.Second)
+		server.redis.Set(ctx, cachekey, jsonData, 30*time.Minute)
 		ctx.JSON(http.StatusOK, ads)
 	} else if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))

@@ -12,3 +12,11 @@ CREATE TABLE IF NOT EXISTS ads (
     country country_enum[],
     platform platform_enum[]
 );
+
+CREATE INDEX idx_ads_start_at ON ads(start_at);
+CREATE INDEX idx_ads_end_at ON ads(end_at);
+CREATE INDEX idx_ads_age ON ads(age);
+CREATE INDEX idx_ads_country ON ads USING GIN (country);
+CREATE INDEX idx_ads_platform ON ads USING GIN (platform);
+CREATE INDEX idx_ads_gender ON ads USING GIN (gender);
+
