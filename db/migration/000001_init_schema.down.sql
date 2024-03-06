@@ -1,0 +1,5 @@
+DROP TABLE IF EXISTS ads;
+
+DROP TYPE IF EXISTS platform_enum;
+DROP TYPE IF EXISTS country_enum;
+DROP TYPE IF EXISTS gender_enum;
