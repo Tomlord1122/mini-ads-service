@@ -1,6 +1,5 @@
 # Dcard-Backend-Intern
 
-````markdown
 # Ads Management API
 
 ## Overview
@@ -26,16 +25,16 @@ This project is 2024 Dcard backend intern assignment.
 ### Installation
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/Tomlord1122/Dcard-Backend-Intern.git
    ```
-````
 
 2. Install dependencies:
    ```bash
    go mod tidy
    ```
-3. Set up the environment variables as per the `.env.example` file.
+3. Set up the environment variables as per the `.env` file.
 
 ### Running the API
 
