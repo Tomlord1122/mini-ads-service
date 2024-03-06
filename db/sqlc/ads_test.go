@@ -42,7 +42,7 @@ func CreateRandomAds(t *testing.T) Ad {
 }
 
 func TestCreateAds(t *testing.T) {
-	for i := 0; i < 150; i++ {
+	for i := 0; i < 300; i++ {
 		CreateRandomAds(t)
 	}
 }
