@@ -2,19 +2,29 @@ package api
 
 import (
 	db "backend-intern/db/sqlc"
+	"backend-intern/util"
 
 	"github.com/gin-gonic/gin"
+	"github.com/redis/go-redis/v9"
 )
 
 type Server struct {
 	query *db.Queries
 	route *gin.Engine
+	redis *redis.Client
 }
 
-func NewServer(query *db.Queries) *Server {
+func NewServer(query *db.Queries, config util.Config) *Server {
+	rdb := redis.NewClient(&redis.Options{
+		Addr:     config.RedisAddr,
+		Password: config.RedisPassword,
+		DB:       config.RedisDB,
+	})
+
 	server := &Server{
 		query: query,
 		route: gin.Default(),
+		redis: rdb,
 	}
 	// Add routes here
 	server.route.POST("/ads", server.CreateAds)

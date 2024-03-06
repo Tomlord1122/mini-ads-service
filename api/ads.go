@@ -3,10 +3,14 @@ package api
 import (
 	db "backend-intern/db/sqlc"
 	"database/sql"
+	"encoding/json"
+	"fmt"
+	"hash/fnv"
 	"net/http"
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/redis/go-redis/v9"
 )
 
 type createAdsRequest struct {
@@ -29,6 +33,14 @@ type listAdsRequest struct {
 	Offset   int32    `form:"offset"`
 }
 
+func GenerateCacheKey(req listAdsRequest) string {
+	// 使用 FNV 哈希算法來生成一個簡短的唯一鍵
+	hasher := fnv.New32a()
+
+	hasher.Write([]byte(fmt.Sprintf("%v-%v-%v-%v-%v-%v-%v",
+		req.AgeStart, req.AgeEnd, req.Country, req.Platform, req.Gender, req.Limit, req.Offset)))
+	return fmt.Sprintf("ads_list_%d", hasher.Sum32())
+}
 func (server *Server) CreateAds(ctx *gin.Context) {
 	var req createAdsRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
@@ -94,10 +106,36 @@ func (server *Server) ListAds(ctx *gin.Context) {
 		Offset:  req.Offset,
 	}
 
-	ads, err := server.query.ListAds(ctx, arg)
-	if err != nil {
+	cachekey := GenerateCacheKey(req)
+	// Get data from Redis cache
+	val, err := server.redis.Get(ctx, cachekey).Result() // Get data from Redis cache
+	if err == redis.Nil {
+		// data does not exist in Redis cache
+		ads, err := server.query.ListAds(ctx, arg)
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+			return
+		}
+		// Set data to Redis cache
+		jsonData, err := json.Marshal(ads) // type invert to json
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+			return
+		}
+		server.redis.Set(ctx, cachekey, jsonData, 5*time.Second)
+		ctx.JSON(http.StatusOK, ads)
+	} else if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
+	} else {
+		// data exist in Redis cache
+		var ads []db.ListAdsRow
+		err := json.Unmarshal([]byte(val), &ads) // type invert to struct
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+			return
+		}
+		ctx.JSON(http.StatusOK, ads)
 	}
-	ctx.JSON(http.StatusOK, ads)
+
 }
