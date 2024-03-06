@@ -53,6 +53,41 @@ func (q *Queries) CreateAds(ctx context.Context, arg CreateAdsParams) (Ad, error
 	return i, err
 }
 
+const getActiveAds = `-- name: GetActiveAds :many
+
+
+SELECT
+    COUNT(*) 
+FROM 
+    ads
+WHERE 
+    start_at < NOW() AND end_at > NOW()
+`
+
+// $7是offset
+func (q *Queries) GetActiveAds(ctx context.Context) ([]int64, error) {
+	rows, err := q.db.QueryContext(ctx, getActiveAds)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []int64
+	for rows.Next() {
+		var count int64
+		if err := rows.Scan(&count); err != nil {
+			return nil, err
+		}
+		items = append(items, count)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const listAds = `-- name: ListAds :many
 SELECT
     "title", "end_at"

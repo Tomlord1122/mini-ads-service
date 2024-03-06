@@ -73,6 +73,15 @@ func (server *Server) CreateAds(ctx *gin.Context) {
 		}
 	}
 
+	activeAdsCount, err := server.query.GetActiveAds(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+	if activeAdsCount[0] >= 1000 {
+		ctx.JSON(http.StatusForbidden, gin.H{"error": "Cannot create more ads. The limit of active ads has been reached."})
+		return
+	}
 	var req createAdsRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		ctx.JSON(400, errorResponse(err))

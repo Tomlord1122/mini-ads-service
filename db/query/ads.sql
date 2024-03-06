@@ -23,3 +23,12 @@ ORDER BY
     end_at ASC
 LIMIT LEAST(GREATEST(COALESCE(NULLIF($6, 0), 5), 1), 100) -- $6是limit
 OFFSET $7; -- $7是offset
+
+
+-- name: GetActiveAds :many
+SELECT
+    COUNT(*) 
+FROM 
+    ads
+WHERE 
+    start_at < NOW() AND end_at > NOW();
