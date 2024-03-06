@@ -34,7 +34,7 @@ type listAdsRequest struct {
 }
 
 func GenerateCacheKey(req listAdsRequest) string {
-	// 使用 FNV 哈希算法來生成一個簡短的唯一鍵
+
 	hasher := fnv.New32a()
 
 	hasher.Write([]byte(fmt.Sprintf("%v-%v-%v-%v-%v-%v-%v",
@@ -42,6 +42,37 @@ func GenerateCacheKey(req listAdsRequest) string {
 	return fmt.Sprintf("ads_list_%d", hasher.Sum32())
 }
 func (server *Server) CreateAds(ctx *gin.Context) {
+
+	// generate a key for the cache
+	date := time.Now().Format("2006-01-02")
+	key := fmt.Sprintf("create_ads_%s", date)
+
+	// check the api request limit
+	count, err := server.redis.Get(ctx, key).Int()
+	if err != nil && err != redis.Nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+	if count >= 3000 {
+		ctx.JSON(http.StatusTooManyRequests, gin.H{"error": "API call limit reached for today"})
+		return
+	}
+
+	// add the count
+	newCount, err := server.redis.Incr(ctx, key).Result()
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+	if newCount == 1 {
+		// set the expiration time for the key
+		_, err := server.redis.Expire(ctx, key, 24*time.Hour).Result()
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+			return
+		}
+	}
+
 	var req createAdsRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		ctx.JSON(400, errorResponse(err))
