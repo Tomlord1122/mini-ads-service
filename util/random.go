@@ -54,10 +54,10 @@ func RandomString(n int) string {
 func RandomTime() time.Time {
 
 	currentTime := time.Now()
-	// 從現在起到未來一天的隨機時間
+
 	secondsInTenYears := int64(1 * 24 * 3600)
 	randomSeconds := rand.Int63n(secondsInTenYears)
-	// 將隨機時間差加到當前時間上
+
 	randomTime := currentTime.Add(time.Second * time.Duration(randomSeconds))
 
 	return randomTime
