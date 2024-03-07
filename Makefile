@@ -23,6 +23,8 @@ test:
 	go test -v -cover ./...
 sqlc:
 	sqlc generate 
-
-
-.PHONY: postgres createdb dropdb migrateup migratedown sqlc
+k6:
+	cd k6 && k6 run loadtest.js
+redis:
+	redis-server ./redis.conf
+.PHONY: postgres createdb dropdb migrateup migratedown sqlc k6 test server stop start

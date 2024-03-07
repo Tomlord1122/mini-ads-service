@@ -29,6 +29,7 @@ func NewServer(query *db.Queries, config util.Config) *Server {
 	// Add routes here
 	server.route.POST("/ads", server.CreateAds)
 	server.route.GET("/ads", server.ListAds)
+	server.route.GET("/ads/random", server.CreateRandomAds)
 
 	return server
 }
