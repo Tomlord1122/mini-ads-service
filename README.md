@@ -9,6 +9,7 @@ This project is 2024 Dcard backend intern assignment.
 ## Features
 
 - **Create Ads**: Add new advertisements with detailed targeting options.
+- **Create Random Ads**: Add random advertisements for testing.
 - **List Ads**: Retrieve active ads with flexible filtering, optimized for performance.
 - **Cache Integration**: Leverages Redis for caching, significantly reducing response times for frequent queries.
 - **Database Optimization**: Utilizes indexed queries for efficient data retrieval.
@@ -21,6 +22,7 @@ This project is 2024 Dcard backend intern assignment.
 - Go 1.15+
 - PostgreSQL 12+
 - Redis 6+
+- Docker
 
 ### Installation
 
@@ -35,6 +37,15 @@ This project is 2024 Dcard backend intern assignment.
    go mod tidy
    ```
 3. Set up the environment variables as per the `.env` file.
+
+4. ```
+   make postgres
+   make createdb
+   make migrate
+   make server
+   make redis
+   make k6 # testing
+   ```
 
 ### Running the API
 
