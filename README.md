@@ -17,6 +17,15 @@ Development details: (https://keen-rose-d7a.notion.site/Dcard-c4192a8187434789ba
 - **Database Optimization**: Utilizes indexed queries for efficient data retrieval.
 - **Scalability**: Designed for high throughput, supporting auto-scaling and load balancing.
 
+## Requirements
+
+- [x] GET API
+- [x] POST API
+- [x] Test
+- [x] 10000 RPS
+- [x] Number of ads (StartAt < NOW < EndAt) < 1000
+- [x] The number of ads created per day will not exceed 3,000
+
 ## Getting Started
 
 ### Prerequisites
@@ -105,3 +114,11 @@ Development details: (https://keen-rose-d7a.notion.site/Dcard-c4192a8187434789ba
 
 ![](/asset/test2.png)
 第二次測試
+
+## Visualize
+
+![](/asset/POSTMAN.png)
+
+![](/asset/TABLE.png)
+
+![](/asset/db.png)
