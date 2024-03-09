@@ -6,6 +6,8 @@
 
 This project is 2024 Dcard backend intern assignment.
 
+Development details: (https://keen-rose-d7a.notion.site/Dcard-c4192a8187434789bab65a80d11d9edf?pvs=4)
+
 ## Features
 
 - **Create Ads**: Add new advertisements with detailed targeting options.
@@ -50,7 +52,6 @@ This project is 2024 Dcard backend intern assignment.
     make k6 # testing
     ```
 2.  Makefile:
-
 
     ```bash
     postgres:
