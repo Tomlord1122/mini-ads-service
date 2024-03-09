@@ -8,6 +8,8 @@ This project is 2024 Dcard backend intern assignment.
 
 Development details: (https://keen-rose-d7a.notion.site/Dcard-c4192a8187434789bab65a80d11d9edf?pvs=4)
 
+Another repo that try to horizontal scale up the service: (https://github.com/Tomlord1122/Dcard-backend-extenstion)
+
 ## Features
 
 - **Create Ads**: Add new advertisements with detailed targeting options.
