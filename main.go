@@ -22,7 +22,7 @@ func main() {
 		log.Fatal("cannot connect to db:", err)
 	}
 	conn.SetMaxOpenConns(1000000) // 設置最大開啟連接數
-	conn.SetMaxIdleConns(500)     // 設置最大空閒連接數
+	conn.SetMaxIdleConns(50000)   // 設置最大空閒連接數
 	conn.SetConnMaxLifetime(time.Hour)
 	query := db.New(conn)
 	server := api.NewServer(query, config)
