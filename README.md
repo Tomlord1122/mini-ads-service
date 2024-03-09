@@ -112,10 +112,10 @@ Another repo that try to horizontal scale up the service: (https://github.com/To
 ## Load test
 
 ![](/asset/test.png)
-第一次測試
+test1
 
 ![](/asset/test2.png)
-第二次測試
+test2
 
 ## Visualize
 
