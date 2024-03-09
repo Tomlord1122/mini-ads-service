@@ -38,19 +38,19 @@ This project is 2024 Dcard backend intern assignment.
    ```
 3. Set up the environment variables as per the `.env` file.
 
-4. ```
-   make postgres
-   make createdb
-   make migrate
-   make server
-   make redis
-   make k6 # testing
-   ```
-
 ### Running the API
 
 1.  Start the PostgreSQL and Redis servers.
-2.  Run the following command to start the API server via Makefile:
+    ```
+    make postgres
+    make createdb
+    make migrate
+    make server
+    make redis
+    make k6 # testing
+    ```
+2.  Makefile:
+
 
     ```bash
     postgres:
