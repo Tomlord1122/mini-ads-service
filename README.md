@@ -46,6 +46,8 @@ This project is 2024 Dcard backend intern assignment.
     docker run --name postgres16 -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:latest
     ```
 
+    ```
+
          stop:
          docker stop postgres16
 
@@ -74,8 +76,7 @@ This project is 2024 Dcard backend intern assignment.
          redis-server ./redis.conf
 
          .PHONY: postgres createdb dropdb migrateup migratedown sqlc k6 test server stop start
-
-```
+    ```
 
 ## API Endpoints
 
@@ -89,4 +90,3 @@ This project is 2024 Dcard backend intern assignment.
 
 ![](/asset/test2.png)
 第二次測試
-```
